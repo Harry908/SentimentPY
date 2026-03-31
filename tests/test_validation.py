@@ -15,3 +15,19 @@ def test_predict_sentiment_rejects_non_string() -> None:
         assert False, "Expected TypeError for non-string input"
     except TypeError:
         assert True
+
+
+def test_validate_text_input_rejects_numeric_only() -> None:
+    try:
+        validate_text_input("1233323")
+        assert False, "Expected ValueError for numeric-only input"
+    except ValueError:
+        assert True
+
+
+def test_validate_text_input_rejects_symbol_only() -> None:
+    try:
+        validate_text_input("!@#$%^&*()")
+        assert False, "Expected ValueError for symbol-only input"
+    except ValueError:
+        assert True

@@ -11,3 +11,14 @@ sentence,expected
 "I received the package on Monday.",Neutral
 "The report contains five sections and two charts.",Neutral
 "The phone is fine, not great but not bad either.",Neutral
+"Hi",Neutral
+1233323,INPUT_ERROR
+"!@#$%^&*()",INPUT_ERROR
+"",INPUT_ERROR
+"   ",INPUT_ERROR
+"''",INPUT_ERROR
+"---",INPUT_ERROR
+"0.0",INPUT_ERROR
+"😊😊",INPUT_ERROR
+"___",INPUT_ERROR
+"The camera quality is excellent, but the battery life is terrible.",Neutral

@@ -3,31 +3,45 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-from app.sentiment import predict_sentiment
+from fastapi.testclient import TestClient
+
+from app.main import app
 
 DATA_FILE = Path("data/test_sentences.csv")
 OUTPUT_FILE = Path("results/evaluation_output.txt")
 
 
 def run() -> None:
-    rows = []
+    source_rows = []
+    client = TestClient(app)
+
     with DATA_FILE.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
         for row in reader:
-            sentence = row["sentence"]
-            expected = row["expected"]
-            prediction = predict_sentiment(sentence)
-            passed = prediction.sentiment.lower() == expected.lower()
-            rows.append(
-                {
-                    "sentence": sentence,
-                    "expected": expected,
-                    "predicted": prediction.sentiment,
-                    "confidence": f"{prediction.confidence:.4f}",
-                    "raw_label": prediction.raw_label,
-                    "pass": "PASS" if passed else "FAIL",
-                }
-            )
+            source_rows.append(row)
+
+    texts = [row["sentence"] for row in source_rows]
+    batch_payload = client.post("/sentiment/batch", json={"texts": texts}).json()
+    batch_results = batch_payload["results"]
+
+    rows = []
+    for row, item in zip(source_rows, batch_results):
+        sentence = row["sentence"]
+        expected = row["expected"]
+
+        predicted = str(item["sentiment"]) if item["ok"] else "INPUT_ERROR"
+        confidence = f"{float(item['confidence'] or 0.0):.4f}"
+
+        passed = predicted.lower() == expected.lower()
+        rows.append(
+            {
+                "sentence": sentence,
+                "expected": expected,
+                "predicted": predicted,
+                "confidence": confidence,
+                "pass": "PASS" if passed else "FAIL",
+            }
+        )
 
     total = len(rows)
     passed_count = sum(1 for row in rows if row["pass"] == "PASS")
@@ -39,7 +53,7 @@ def run() -> None:
         lines.append(f"{idx:02d}. {row['sentence']}")
         lines.append(
             f"    expected={row['expected']:<8} predicted={row['predicted']:<8} "
-            f"confidence={row['confidence']} raw={row['raw_label']} result={row['pass']}"
+            f"confidence={row['confidence']} result={row['pass']}"
         )
     lines.append("=" * 80)
     lines.append(f"Total: {total}")
