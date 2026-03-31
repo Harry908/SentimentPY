@@ -1,16 +1,16 @@
 # SentimentPY
 
-A small FastAPI project that predicts text sentiment (Positive, Negative, Neutral) using a Hugging Face model.
+A simple FastAPI sentiment API using a Hugging Face model.
 
 Model used: `cardiffnlp/twitter-roberta-base-sentiment-latest` (native 3-class sentiment output).
 
-## Objective coverage
+## Features
 
-- Accepts text input and returns sentiment.
-- Uses one NLP model/library: Hugging Face Transformers pipeline.
-- Includes basic input checks: empty input and non-string input.
-- Evaluates at least 12 sentences (4 positive, 4 negative, 4 neutral).
-- Includes short analysis of 2 incorrect/uncertain predictions.
+- Single prediction endpoint: `POST /sentiment`
+- Batch prediction endpoint: `POST /sentiment/batch`
+- Per-item validation and error isolation in batch mode
+- Evaluation script that calls the API and writes a report
+- Pytest suite in one file
 
 ## Setup
 
@@ -33,39 +33,85 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+Or use the helper script:
+
+```bat
+start_api.bat
+```
+
+`--reload` is for development only (auto-restarts on file changes).
+
 Open interactive docs at: `http://127.0.0.1:8000/docs`
 
-### Example request
+## API Summary
+
+### `POST /sentiment`
+
+Request:
 
 ```json
-POST /sentiment
 {
   "text": "I love this product"
 }
 ```
 
-### Example response
+Success response:
 
 ```json
 {
-  "sentiment": "Positive",
-  "confidence": 0.9998,
-  "raw_label": "POSITIVE",
-  "raw_score": 0.9998
+  "sentiment": "positive",
+  "confidence": 0.9998
 }
 ```
 
-## Run 12-sentence evaluation
+Validation error response:
+
+```json
+{
+  "ok": false,
+  "error": {
+    "message": "Input text must contain at least one alphabetic character."
+  }
+}
+```
+
+### `POST /sentiment/batch`
+
+Request:
+
+```json
+{
+  "texts": ["I love this", "1233323", "This is bad"]
+}
+```
+
+Response (per-item success/error):
+
+```json
+{
+  "ok": false,
+  "total": 3,
+  "succeeded": 2,
+  "failed": 1,
+  "results": [
+    {"index": 0, "ok": true, "input": "I love this", "sentiment": "positive", "confidence": 0.99, "error": null},
+    {"index": 1, "ok": false, "input": "1233323", "sentiment": null, "confidence": null, "error": "Input text must contain at least one alphabetic character."},
+    {"index": 2, "ok": true, "input": "This is bad", "sentiment": "negative", "confidence": 0.93, "error": null}
+  ]
+}
+```
+
+## Run Evaluation
 
 ```powershell
 python -m scripts.run_evaluation
 ```
 
-This prints results and saves output to `results/evaluation_output.txt`.
+This prints results and writes `results/evaluation_output.txt`.
 
-## Run validation tests
+## Run Tests
 
 ```powershell
-pytest -q
+python -m pytest -q
 ```
 
