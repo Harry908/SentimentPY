@@ -1,0 +1,30 @@
+Sentiment Evaluation Results
+================================================================================
+01. I absolutely love this product and would buy it again.
+    expected=Positive predicted=Positive confidence=0.9871 raw=positive result=PASS
+02. The customer support was fantastic and solved my issue quickly.
+    expected=Positive predicted=Positive confidence=0.9503 raw=positive result=PASS
+03. This app is amazing and very easy to use.
+    expected=Positive predicted=Positive confidence=0.9892 raw=positive result=PASS
+04. The meal was delicious and beautifully presented.
+    expected=Positive predicted=Positive confidence=0.9848 raw=positive result=PASS
+05. This is the worst purchase I have made this year.
+    expected=Negative predicted=Negative confidence=0.9524 raw=negative result=PASS
+06. I am very disappointed with the service quality.
+    expected=Negative predicted=Negative confidence=0.9290 raw=negative result=PASS
+07. The movie was boring and a complete waste of time.
+    expected=Negative predicted=Negative confidence=0.9328 raw=negative result=PASS
+08. The device stopped working after two days.
+    expected=Negative predicted=Negative confidence=0.7052 raw=negative result=PASS
+09. The meeting starts at 10 AM tomorrow.
+    expected=Neutral  predicted=Neutral  confidence=0.9209 raw=neutral result=PASS
+10. I received the package on Monday.
+    expected=Neutral  predicted=Neutral  confidence=0.7647 raw=neutral result=PASS
+11. The report contains five sections and two charts.
+    expected=Neutral  predicted=Neutral  confidence=0.9534 raw=neutral result=PASS
+12. The phone is fine, not great but not bad either.
+    expected=Neutral  predicted=Positive confidence=0.6558 raw=positive result=FAIL
+================================================================================
+Total: 12
+Passed: 11
+Failed: 1
