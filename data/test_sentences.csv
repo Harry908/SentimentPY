@@ -1,0 +1,13 @@
+sentence,expected
+"I absolutely love this product and would buy it again.",Positive
+"The customer support was fantastic and solved my issue quickly.",Positive
+"This app is amazing and very easy to use.",Positive
+"The meal was delicious and beautifully presented.",Positive
+"This is the worst purchase I have made this year.",Negative
+"I am very disappointed with the service quality.",Negative
+"The movie was boring and a complete waste of time.",Negative
+"The device stopped working after two days.",Negative
+"The meeting starts at 10 AM tomorrow.",Neutral
+"I received the package on Monday.",Neutral
+"The report contains five sections and two charts.",Neutral
+"The phone is fine, not great but not bad either.",Neutral
