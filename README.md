@@ -108,7 +108,13 @@ Run:
 python -m scripts.run_evaluation
 ```
 
-Data and outputs:
+## Tests
+
+```powershell
+python -m pytest -q
+```
+
+## Data and outputs:
 
 - Test data folder: `data`
 - Test data file: `data/test_sentences.csv`
@@ -117,10 +123,4 @@ Data and outputs:
 - App screenshots:
   - `results/single_statement_analysis.png`
   - `results/batch_statements_analysis.png`
-
-## Tests
-
-```powershell
-python -m pytest -q
-```
-
+- Video Demo: https://drive.google.com/file/d/1cEvitSH2sIpxEmZypj919S8rD4SeL99d/view?usp=sharing
