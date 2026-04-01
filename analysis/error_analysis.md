@@ -1,22 +1,13 @@
-# Error/Uncertain Prediction Analysis
+# Error Analysis
 
-This project uses a native 3-class model: cardiffnlp/twitter-roberta-base-sentiment-latest. 
-In the latest 12-sentence run, 11 predictions passed and 1 failed. Below are two useful analysis cases: one incorrect and one uncertain.
+Evaluation: 21/23 passed. Two failures below.
 
-## Case 1
-Sentence: "The phone is fine, not great but not bad either."
+## Case 1: Mixed Polarity
+**Sentence:** "The phone is fine, not great but not bad either."
+- Expected: Neutral | Predicted: Positive (0.6558)
+- Issue: Balanced sentiment with negations, but model focused on the positive opener ("fine") and missed the neutral intent despite contradictory cues.
 
-- Expected: Neutral
-- Predicted: Positive
-- Confidence: 0.6558
-- Why it failed: The sentence contains balanced wording with mild contrast ("not great" and "not bad"), but the model leaned slightly toward positive sentiment.
-- Mitigation: Fine-tune on domain-specific neutral/mixed examples, or apply a post-processing rule for mixed polarity phrases.
-
-## Case 2
-Sentence: "The device stopped working after two days."
-
-- Expected: Negative
-- Predicted: Negative
-- Confidence: 0.7052
-- Why uncertain: Prediction is correct, but confidence is lower than other negative examples, suggesting wording sensitivity around failure descriptions.
-- Mitigation: Expand evaluation with more product-failure phrasings and monitor confidence distribution to define an uncertainty threshold.
+## Case 2: Conflicting Sentiment
+**Sentence:** "The camera quality is excellent, but the battery life is terrible."
+- Expected: Neutral | Predicted: Negative (0.8238)
+- Issue: Clear mixed sentiment (praise + critique), but model weighted the strong negative keyword ("terrible") as the dominant signal, ignoring the positive balance.
