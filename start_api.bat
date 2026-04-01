@@ -1,7 +1,6 @@
 @echo off
 setlocal
 
-REM Ensure commands run from this script's directory
 cd /d "%~dp0"
 
 if not exist ".venv\Scripts\activate.bat" (
@@ -11,8 +10,10 @@ if not exist ".venv\Scripts\activate.bat" (
 )
 
 call ".venv\Scripts\activate.bat"
-
-echo Starting API at http://127.0.0.1:8000
+echo.
+echo API: http://127.0.0.1:8000
+echo Docs: http://127.0.0.1:8000/docs
+echo.
 uvicorn app.main:app --reload
 
 endlocal
