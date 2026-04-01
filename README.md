@@ -1,20 +1,18 @@
 # SentimentPY
 
-A simple FastAPI sentiment API using a Hugging Face model.
+FastAPI sentiment API using the Hugging Face model `cardiffnlp/twitter-roberta-base-sentiment-latest`.
 
-Model used: `cardiffnlp/twitter-roberta-base-sentiment-latest` (native 3-class sentiment output).
-
-## Features
+## What This App Does
 
 - Single prediction endpoint: `POST /sentiment`
 - Batch prediction endpoint: `POST /sentiment/batch`
-- Per-item validation and error isolation in batch mode
+- Per-item validation with error isolation in batch mode
 - Evaluation script that calls the API and writes a report
-- Pytest suite in one file
+- Pytest test suite
 
-## Setup
+## Quick Start
 
-1. Create and activate a virtual environment.
+1. Create and activate virtual environment.
 
 ```powershell
 python -m venv .venv
@@ -27,23 +25,24 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Run API
-
-```powershell
-uvicorn app.main:app --reload
-```
-
-Or use the helper script:
+3. Start API.
 
 ```bat
 start_api.bat
 ```
 
-`--reload` is for development only (auto-restarts on file changes).
+Alternative:
 
-Open interactive docs at: `http://127.0.0.1:8000/docs`
+```powershell
+uvicorn app.main:app --reload
+```
 
-## API Summary
+Docs URLs:
+
+- Swagger UI: `http://127.0.0.1:8000/docs`
+- ReDoc: `http://127.0.0.1:8000/redoc`
+
+## API Endpoints
 
 ### `POST /sentiment`
 
@@ -85,7 +84,7 @@ Request:
 }
 ```
 
-Response (per-item success/error):
+Response:
 
 ```json
 {
@@ -101,15 +100,25 @@ Response (per-item success/error):
 }
 ```
 
-## Run Evaluation
+## Evaluation
+
+Run:
 
 ```powershell
 python -m scripts.run_evaluation
 ```
 
-This prints results and writes `results/evaluation_output.txt`.
+Data and outputs:
 
-## Run Tests
+- Test data folder: `data`
+- Test data file: `data/test_sentences.csv`
+- Results folder: `results`
+- Evaluation output file: `results/evaluation_output.txt`
+- App screenshots:
+  - `results/single_statement_analysis.png`
+  - `results/batch_statements_analysis.png`
+
+## Tests
 
 ```powershell
 python -m pytest -q
